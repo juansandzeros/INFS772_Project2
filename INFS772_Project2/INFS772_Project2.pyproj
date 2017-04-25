@@ -24,6 +24,9 @@
   <ItemGroup>
     <Compile Include="INFS772_Project2.py" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="kddcup98.csv" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
