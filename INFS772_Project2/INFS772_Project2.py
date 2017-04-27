@@ -85,7 +85,7 @@ def main():
     df = df.dropna(subset=['TARGET_B'])
     # Remove variable not needed
     df.drop("ID", axis=1, inplace=True)
-    # make copy of TARGET_D
+    # make copy of TARGET_D to be used in Task 2
     target_d = df["TARGET_D"].copy() 
     # Drop 'TARGET_D' variable
     df.drop("TARGET_D", axis=1, inplace=True)
@@ -112,7 +112,7 @@ def main():
 
     # 2.4. quality check 
     # check for false or unreasonable values and set to missing (nan)
-    # unlikely that donors are ages under 14
+    # unlikely that donors are ages under 15
     df['DemAge'].replace([14,7,6,4,2,0],np.nan,inplace=True)
    
     # 2.4. Identify numeric variables that have skewed distribution and need to be log transformed 
@@ -158,7 +158,6 @@ def main():
 
     # 3.2. For continuous variables with skewed distributions, we do log transformation 
     for variable in variables_needs_tranform:
-        #add_log_transform(df, variable)
         df["log_"+variable] = (df[variable].fillna(0)+1).apply(np.log)
 
     # 3.3. Do missing value imputation for continuous variables (replacing miss values with median and add an indicator)
@@ -182,9 +181,9 @@ def main():
     test_X_new = None
 
     # Create the RFE object and compute a cross-validated score.
-    svc = SVC(kernel="linear", cache_size=7000, max_iter=100)
+    svc = SVC(kernel="linear", cache_size=7000, max_iter=5000)
     # The "accuracy" scoring is proportional to the number of correct classifications
-    rfecv = RFECV(estimator=svc, step=1, cv=StratifiedKFold(train_y,5), scoring='accuracy')
+    rfecv = RFECV(estimator=svc, step=1, cv=StratifiedKFold(train_y,5), scoring='r2')
     selector = rfecv.fit(train_X, train_y)
 
     print selector.support_
@@ -251,9 +250,9 @@ def main():
     test_X_new = None
 
     # Create the RFE object and compute a cross-validated score.
-    svc = SVC(kernel="linear", cache_size=7000, max_iter=100)
+    svc = SVC(kernel="linear", cache_size=7000, max_iter=5000)
     # The "accuracy" scoring is proportional to the number of correct classifications
-    rfecv = RFECV(estimator=svc, step=1, cv=ms.KFold(n_splits=5), scoring='accuracy')
+    rfecv = RFECV(estimator=svc, step=1, cv=ms.KFold(n_splits=5), scoring='r2')
     selector = rfecv.fit(train_X, train_y)
 
     print selector.support_
